@@ -1,0 +1,130 @@
+.download{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+}
+
+.imagenmodal{
+    display: none;
+}
+
+.megusta{
+    display: none;
+}
+
+.spanfecha{
+display: none;
+}
+
+.nombreuser{
+    display: none;
+}
+.header{
+    height: 15vh; /* Por ejemplo, el header ocupa el 20% de la altura de la pantalla */
+    /* Otros estilos para tu header */
+    padding-left: 20px !important;
+}
+.home {
+    height: 85vh; /* El contenido de la página home ocupa el 80% de la altura de la pantalla */
+    /* Otros estilos para tu home */
+}
+.imghome{
+    background-image: url("../../assets/tipos-cirujanos-large.jpg") !important;
+}
+
+.imgsignin{
+    background-image: url("../../assets/bg-medical-image.jpg") !important;
+    height: 85vh; 
+}
+/* tipos-cirujanos-large.jpg
+bg-medical-image.jpg */
+
+.dashboard{
+    min-height: 85vh;
+}
+
+.searchNav{
+    background: none !important;
+}
+
+.droppost{
+    width: 17% !important;
+    left: -17px !important;
+}
+.droppost li button{
+    text-align: left !important;
+}
+.logocaptura{
+    margin-left: 7.5rem;
+    filter: drop-shadow(0 0 3px black);
+}
+
+.logocaptura2{
+    filter: drop-shadow(0 0 1.1px black);
+}
+.letrassign{
+    filter: drop-shadow(0 0 1.5px black);
+}
+
+
+.droppost li button:hover{
+    background-color: rgba(59, 134, 134, 0.302) !important; 
+    border-radius: 10px;
+}
+
+@media (min-width: 768px) and (max-width: 1123px) {
+    .arreglocoment {
+      width: 73% !important;
+    }
+}
+
+@media (min-width: 300px) and (max-width: 900px) {
+    .droppost {
+        width: 40% !important;
+    
+    }}
+
+
+
+@media (min-width: 300px) and (max-width: 600px) {
+    .detallescoment{
+        display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: flex-end !important;
+}
+}
+
+
+@media (min-width: 768px) and (max-width: 989px) {
+.recetascroll{
+width: 72% !important;
+}
+
+}
+
+@media (min-width: 350px) and (max-width: 1100px) {
+.detallecomment{
+    display: none !important;
+}}
+
+@media (min-width: 350px) and (max-width: 1100px) {
+.detallescoment{
+width: 55vh !important;
+    }
+}
+
+/*sigin*/
+@media (min-width: 300px) and (max-width: 650px) {
+    .logocaptura{
+        margin-left: 6.5rem;
+    }
+    .letrassign{
+        font-size: 26px !important;
+
+    
+    }
+}
+
