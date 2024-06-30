@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://dy-c-back-host.vercel.app/api/',
+        target: 'https://dy-c-back-host.vercel.app',
         changeOrigin: true,
         secure: true,
       },
@@ -20,11 +20,9 @@ export default defineConfig({
 });
 
 
+
 // {
-//   "rewrites": [
-//     {
-//       "source": "/((?!api/.*).*)",
-//       "destination": "/index.html"
-//     }
+//   "rewrites":  [
+//     {"source": "/(.*)", "destination": "/"}
 //   ]
 // }
