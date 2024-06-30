@@ -18,3 +18,13 @@ export default defineConfig({
     Icons()
   ]
 });
+
+
+// {
+//   "rewrites": [
+//     {
+//       "source": "/((?!api/.*).*)",
+//       "destination": "/index.html"
+//     }
+//   ]
+// }
