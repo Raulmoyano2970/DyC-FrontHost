@@ -1,4 +1,3 @@
-// ANDA SOLO CON EL ADMIN
 import { Modal, Table, Button } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,8 +6,8 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import NavbarIntern from './NavbarIntern';
 import { BiPlus } from 'react-icons/bi';
 import { fadeIn } from '../variants';
-import {motion} from "framer-motion"
-import '../pages/Receta/receta.css'
+import { motion } from "framer-motion";
+import '../pages/Receta/receta.css';
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,7 +19,8 @@ export default function DashPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        // Fetch all posts if the current user is an admin
+        const res = await fetch(`/api/post/getposts${currentUser.isAdmin ? '' : `?userId=${currentUser._id}`}`);
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
@@ -32,16 +32,14 @@ export default function DashPosts() {
         console.log(error.message);
       }
     };
-    if (currentUser.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser._id]);
+    fetchPosts();
+  }, [currentUser._id, currentUser.isAdmin]);
 
   const handleShowMore = async () => {
     const startIndex = userPosts.length;
     try {
       const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/post/getposts?${currentUser.isAdmin ? '' : `userId=${currentUser._id}&`}startIndex=${startIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -83,7 +81,7 @@ export default function DashPosts() {
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const mes = hoy.getMonth() - nacimiento.getMonth();
     if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-        edad--;
+      edad--;
     }
     return edad;
   }
@@ -91,7 +89,7 @@ export default function DashPosts() {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son 0-11
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -112,12 +110,12 @@ export default function DashPosts() {
           initial='hidden'
           whileInView={'show'}
           viewport={{ once: false, amount: 0.7 }}
-          >
-        <NavbarIntern />
+        >
+          <NavbarIntern />
         </motion.div>
       </div>
       <div className="overflow-x-auto">
-        {currentUser.isAdmin && userPosts.length > 0 ? (
+        {userPosts.length > 0 ? (
           <>
             <Table hoverable className="min-w-full shadow-md overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
               <Table.Head className='text-teal-700 border-1'>
@@ -153,11 +151,6 @@ export default function DashPosts() {
                         {post.category}
                       </Link>
                     </Table.Cell>
-                    {/* <Table.Cell className="">
-                      <Link to={`/post/${post.slug}`}>
-                        {new Date(post.updatedAt).toLocaleDateString()}
-                      </Link>
-                    </Table.Cell> */}
                     <Table.Cell className="">
                       <Link to={`/post/${post.slug}`}>
                         {formatDate(post.edad)}
@@ -231,19 +224,18 @@ export default function DashPosts() {
           </Modal.Body>
         </Modal>
       </div>
-      <Link 
-        to={'/create-post'}
-        >
-        <button class="inline-flex items-center justify-center w-16 h-16 mr-2 text-indigo-100 transition-colors duration-150 bg-teal-600 rounded-full focus:shadow-outline hover:bg-teal-800 fixed bottom-8 right-12">
-          <svg class="w-6 h-6 fill-current" viewBox="0 0 16 17">
-            <BiPlus></BiPlus>
-          </svg>
+      <Link to={'/create-post'}>
+        <button className="inline-flex items-center justify-center w-16 h-16 mr-2 text-indigo-100 transition-colors duration-150 bg-teal-600 rounded-full focus:shadow-outline hover:bg-teal-800 fixed bottom-8 right-12">
+          <BiPlus className="w-6 h-6 fill-current" />
         </button>
       </Link>
     </div>
   );
 }
 
+
+
+// // ANDA SOLO CON EL ADMIN
 // import { Modal, Table, Button } from 'flowbite-react';
 // import { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
@@ -252,12 +244,12 @@ export default function DashPosts() {
 // import NavbarIntern from './NavbarIntern';
 // import { BiPlus } from 'react-icons/bi';
 // import { fadeIn } from '../variants';
-// import { motion } from 'framer-motion';
-// import '../pages/Receta/receta.css';
+// import {motion} from "framer-motion"
+// import '../pages/Receta/receta.css'
 
 // export default function DashPosts() {
 //   const { currentUser } = useSelector((state) => state.user);
-//   const [posts, setPosts] = useState([]);
+//   const [userPosts, setUserPosts] = useState([]);
 //   const [showMore, setShowMore] = useState(true);
 //   const [showModal, setShowModal] = useState(false);
 //   const [postIdToDelete, setPostIdToDelete] = useState('');
@@ -265,10 +257,10 @@ export default function DashPosts() {
 //   useEffect(() => {
 //     const fetchPosts = async () => {
 //       try {
-//         const res = await fetch(`/api/post/getposts`);
+//         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
 //         const data = await res.json();
 //         if (res.ok) {
-//           setPosts(data.posts);
+//           setUserPosts(data.posts);
 //           if (data.posts.length < 9) {
 //             setShowMore(false);
 //           }
@@ -280,15 +272,17 @@ export default function DashPosts() {
 //     if (currentUser.isAdmin) {
 //       fetchPosts();
 //     }
-//   }, [currentUser.isAdmin]);
+//   }, [currentUser._id]);
 
 //   const handleShowMore = async () => {
-//     const startIndex = posts.length;
+//     const startIndex = userPosts.length;
 //     try {
-//       const res = await fetch(`/api/post/getposts?startIndex=${startIndex}`);
+//       const res = await fetch(
+//         `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+//       );
 //       const data = await res.json();
 //       if (res.ok) {
-//         setPosts((prev) => [...prev, ...data.posts]);
+//         setUserPosts((prev) => [...prev, ...data.posts]);
 //         if (data.posts.length < 9) {
 //           setShowMore(false);
 //         }
@@ -301,14 +295,19 @@ export default function DashPosts() {
 //   const handleDeletePost = async () => {
 //     setShowModal(false);
 //     try {
-//       const res = await fetch(`/api/post/deletepost/${postIdToDelete}`, {
-//         method: 'DELETE',
-//       });
+//       const res = await fetch(
+//         `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+//         {
+//           method: 'DELETE',
+//         }
+//       );
 //       const data = await res.json();
 //       if (!res.ok) {
 //         console.log(data.message);
 //       } else {
-//         setPosts((prev) => prev.filter((post) => post._id !== postIdToDelete));
+//         setUserPosts((prev) =>
+//           prev.filter((post) => post._id !== postIdToDelete)
+//         );
 //       }
 //     } catch (error) {
 //       console.log(error.message);
@@ -321,7 +320,7 @@ export default function DashPosts() {
 //     let edad = hoy.getFullYear() - nacimiento.getFullYear();
 //     const mes = hoy.getMonth() - nacimiento.getMonth();
 //     if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-//       edad--;
+//         edad--;
 //     }
 //     return edad;
 //   }
@@ -350,12 +349,12 @@ export default function DashPosts() {
 //           initial='hidden'
 //           whileInView={'show'}
 //           viewport={{ once: false, amount: 0.7 }}
-//         >
-//           <NavbarIntern />
+//           >
+//         <NavbarIntern />
 //         </motion.div>
 //       </div>
 //       <div className="overflow-x-auto">
-//         {currentUser.isAdmin && posts.length > 0 ? (
+//         {currentUser.isAdmin && userPosts.length > 0 ? (
 //           <>
 //             <Table hoverable className="min-w-full shadow-md overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
 //               <Table.Head className='text-teal-700 border-1'>
@@ -368,7 +367,7 @@ export default function DashPosts() {
 //                 <Table.HeadCell></Table.HeadCell>
 //                 <Table.HeadCell></Table.HeadCell>
 //               </Table.Head>
-//               {posts.map((post) => (
+//               {userPosts.map((post) => (
 //                 <Table.Body key={post._id} className="divide-y ">
 //                   <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-teal-800/10">
 //                     <Table.Cell className="font-medium text-gray-900 dark:text-white">
@@ -391,6 +390,11 @@ export default function DashPosts() {
 //                         {post.category}
 //                       </Link>
 //                     </Table.Cell>
+//                     {/* <Table.Cell className="">
+//                       <Link to={`/post/${post.slug}`}>
+//                         {new Date(post.updatedAt).toLocaleDateString()}
+//                       </Link>
+//                     </Table.Cell> */}
 //                     <Table.Cell className="">
 //                       <Link to={`/post/${post.slug}`}>
 //                         {formatDate(post.edad)}
@@ -464,16 +468,16 @@ export default function DashPosts() {
 //           </Modal.Body>
 //         </Modal>
 //       </div>
-//       <Link to={'/create-post'}>
-//         <button className="inline-flex items-center justify-center w-16 h-16 mr-2 text-indigo-100 transition-colors duration-150 bg-teal-600 rounded-full focus:shadow-outline hover:bg-teal-800 fixed bottom-8 right-12">
-//           <svg className="w-6 h-6 fill-current" viewBox="0 0 16 17">
-//             <BiPlus />
+//       <Link 
+//         to={'/create-post'}
+//         >
+//         <button class="inline-flex items-center justify-center w-16 h-16 mr-2 text-indigo-100 transition-colors duration-150 bg-teal-600 rounded-full focus:shadow-outline hover:bg-teal-800 fixed bottom-8 right-12">
+//           <svg class="w-6 h-6 fill-current" viewBox="0 0 16 17">
+//             <BiPlus></BiPlus>
 //           </svg>
 //         </button>
 //       </Link>
 //     </div>
 //   );
 // }
-
-
 
