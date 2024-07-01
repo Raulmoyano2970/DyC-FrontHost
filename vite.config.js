@@ -22,7 +22,14 @@ export default defineConfig({
 
 
 // {
-//   "rewrites":  [
-//     {"source": "/(.*)", "destination": "/"}
+//   "rewrites": [
+//     {
+//       "source": "/api/(.*)",
+//       "destination": "https://dy-c-back-host.vercel.app/api/$1"
+//     },
+//     {
+//       "source": "/(.*)",
+//       "destination": "/index.html"
+//     }
 //   ]
 // }
