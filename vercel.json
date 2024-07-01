@@ -1,12 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://dy-c-back-host.vercel.app/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "https://dy-c-back-host.vercel.app/api/$1" }
+    ]
+  }
