@@ -1,16 +1,20 @@
 {
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://dy-c-back-host.vercel.app/api/$1"
+    }
+  ],
   "routes": [
     { "src": "/", "dest": "/" },
     { "src": "/about", "dest": "/" },
     { "src": "/sign-in", "dest": "/" },
     { "src": "/sign-up", "dest": "/" },
     { "src": "/search", "dest": "/" },
-    { "src": "/about", "dest": "/" },
     { "src": "/dashboard", "dest": "/" },
     { "src": "/create-post", "dest": "/" },
     { "src": "/update-post/:postId", "dest": "/" },
     { "src": "/projects", "dest": "/" },
     { "src": "/post/:postSlug", "dest": "/" }
-  
   ]
 }
